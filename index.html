@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head><title>Communication</title>
+<style>
+  body {background-color: #FAB; font-family: 'Tahoma'; font-size: 12px;}
+  #title {font-size: 24px; text-align: center; color: rgb(102, 0, 51);}
+  .box {
+    border: 1px solid black;
+    width: 18%;
+    float: left;
+    margin-left: 10px;
+    padding-left: 1px;
+    margin-top: 10px;
+    height: 250px;
+    top: 100px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  #boxes {overflow: hidden;}
+  #headerDiv {text-align: center}
+</style>
+</head>
+
+<body>
+  <br/><br/><br/>
+  <span id="title"><h1>Communication</h1></span>
+  <div id="headerDiv">
+    Communicators online: <span id="p"></span>
+    <br/><br/>
+    <input type="button" id="btnNewTopic" value="Create Topic"></input>
+    <br/><br/>
+    Latest: 
+     <a href="#" class="linkToABox">BRAZIL</a>
+     <a href="#" class="linkToABox">RELIGION</a>
+     <a href="#" class="linkToABox">FOOD</a>
+     <a href="#" class="linkToABox">TRUMP</a>
+     <a href="#" class="linkToABox">USA</a>
+     <a href="#" class="linkToABox">MUSIC</a>
+     <a href="#" class="linkToABox">PIANO</a>
+     <a href="#" class="linkToABox">DRUMS</a>
+     <a href="#" class="linkToABox">INTERNET</a>
+     <a href="#" class="linkToABox">WORK</a>
+  </div>
+  <div id="boxes">
+    <!-- <div class="box" id="boxPOLITICS">POLITICS</div>
+    <div class="box" id="boxRELIGION">RELIGION</div>
+    <div class="box" id="boxFOOD">FOOD</div>
+    <div class="box" id="boxPHILOSOPHY">PHILOSOPHY</div>
+    <div class="box" id="boxINTERNET">INTERNET</div> -->
+  </div>
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+  function addABox(boxName){
+    var boxIdDiv = "#box" + boxName;
+      if ($(boxIdDiv).length === 0){ // if the box was not already placed
+        newBox = '<div class="box" id="box'+boxName+'">'+boxName+'</div>';
+        $("#boxes").append(newBox);
+      }
+  }
+
+  $(function () {
+    var socket = io();
+
+    //update number of communicators online
+    socket.on('updateP', function(p) {
+      $('#p').html(p);
+    });
+
+    //creates a new topic and puts a new box on the screen
+    $('#btnNewTopic').click(function(e) {
+      e.preventDefault();
+      boxName = prompt("Create Topic: ");
+      if (boxName) addABox(boxName);
+    });
+
+    //clicking to add one of the latest boxes
+    $(document).on('click', '.linkToABox', function(e) {
+      e.preventDefault();
+      var boxName = e.target.innerHTML;
+      if (boxName) addABox(boxName);
+    });
+
+    //for each box clicked, prompts for a message and emits it to all
+    $(document).on('click', '.box', function(e) {
+      e.preventDefault();
+      var boxStr = e.target.id;
+      var boxName = boxStr.substring(3, boxStr.length);
+      msg = prompt("Say to " + boxName + ":");
+      if (boxName && msg)
+        socket.emit('chat message', msg, boxName);
+    });
+
+    //receives a message from the socket and puts it in the proper box
+    socket.on('chat message', function(msg, box) {
+      var boxIdDiv = "#box" + box;
+      if ($(boxIdDiv))
+        $(boxIdDiv).html($(boxIdDiv).html() + "<br/>" + msg);
+    });
+
+  });
+</script>
+
+</html>
