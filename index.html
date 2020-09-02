@@ -34,30 +34,24 @@
     <br/><br/>
     <div id="latestList">
       <span id="latestSpan">Latest: </span>
+      <a href="#" class="linkToABox">ABACATE</a>
       <a href="#" class="linkToABox">BRAZIL</a>
-      <a href="#" class="linkToABox">RELIGION</a>
-      <a href="#" class="linkToABox">FOOD</a>
-      <a href="#" class="linkToABox">TRUMP</a>
-      <a href="#" class="linkToABox">USA</a>
-      <a href="#" class="linkToABox">MUSIC</a>
-      <a href="#" class="linkToABox">PIANO</a>
-      <a href="#" class="linkToABox">DRUMS</a>
+      <a href="#" class="linkToABox">CAN</a>
+      <a href="#" class="linkToABox">DODGE</a>
+      <a href="#" class="linkToABox">EPIPHANY</a>
+      <a href="#" class="linkToABox">FLIGHT</a>
+      <a href="#" class="linkToABox">GOD</a>
+      <a href="#" class="linkToABox">HIGH</a>
       <a href="#" class="linkToABox">INTERNET</a>
-      <a href="#" class="linkToABox">WORK</a>
+      <a href="#" class="linkToABox">JOB</a>
     </div>
   </div>
-  <div id="boxes">
-    <!-- <div class="box" id="boxPOLITICS">POLITICS</div>
-    <div class="box" id="boxRELIGION">RELIGION</div>
-    <div class="box" id="boxFOOD">FOOD</div>
-    <div class="box" id="boxPHILOSOPHY">PHILOSOPHY</div>
-    <div class="box" id="boxINTERNET">INTERNET</div> -->
-  </div>
-</body>
+  <div id="boxes"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
+
   function addABox(boxName){
     var boxIdDiv = "#box" + boxName;
       if ($(boxIdDiv).length === 0){ // if the box was not already placed
@@ -76,7 +70,6 @@
 
     //creates a new topic and puts a new box on the screen
     $('#btnNewTopic').click(function(e) {
-      e.preventDefault();
       boxName = prompt("Topic Name: ");
       if (boxName) {
         addABox(boxName);
@@ -86,21 +79,23 @@
 
     //clicking to add one of the latest boxes
     $(document).on('click', '.linkToABox', function(e) {
-      e.preventDefault();
       var boxName = e.target.innerHTML;
       if (boxName) addABox(boxName);
     });
 
-    //receives a message from socket and updates the latest
+    //remove last latest, add a new one
     socket.on('added a box', function(boxName) {
-      newLink = ' <a href="#" class="linkToABox">'+boxName+'</a> ';
-      $("#latestList a").last().remove();
+      newLink = ' <a href="#" class="linkToABox" style="display: none;">'+boxName+'</a> ';
+      $.when( $("#latestList a").last().hide(2500) )
+        .done(function() {
+          $("#latestList a").last().remove();
+      });
       $("#latestSpan").after(newLink);
+      $("#latestSpan").next().show(2500);
     });
 
     //for each box clicked, prompts for a message and emits it to all
     $(document).on('click', '.box', function(e) {
-      e.preventDefault();
       var boxStr = e.target.id;
       var boxName = boxStr.substring(3, boxStr.length);
       msg = prompt("Say to " + boxName + ":");
@@ -117,5 +112,5 @@
 
   });
 </script>
-
+</body>
 </html>
