@@ -22,6 +22,12 @@ io.on('connection', (socket) => {
     io.emit('chat message', msg, box);
   });
 
+  //added a box
+  socket.on('added a box', (boxName) => {
+    //emits a signal that will update the list of latest boxes
+    io.emit('added a box', boxName);
+  });
+
 });
 
 http.listen(3000, () => {
