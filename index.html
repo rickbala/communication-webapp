@@ -35,16 +35,7 @@
     <br/><br/>
     <div id="latestList">
       <span id="latestSpan">Latest: </span>
-      <a href="#" class="linkToABox">ABACATE</a>
-      <a href="#" class="linkToABox">BRAZIL</a>
-      <a href="#" class="linkToABox">CAN</a>
-      <a href="#" class="linkToABox">DODGE</a>
-      <a href="#" class="linkToABox">EPIPHANY</a>
-      <a href="#" class="linkToABox">FLIGHT</a>
-      <a href="#" class="linkToABox">GOD</a>
-      <a href="#" class="linkToABox">HIGH</a>
-      <a href="#" class="linkToABox">INTERNET</a>
-      <a href="#" class="linkToABox">JOB</a>
+      <!-- <a href="#" class="linkToABox">BRAZIL</a> -->
     </div>
   </div>
   <div id="boxes"></div>
@@ -61,8 +52,20 @@
       }
   }
 
+  function createLinkInLatestList(topicName){
+    newLinkToTopic = '<a href="#" class="linkToABox">'+topicName+'</a> ';
+    $("#latestSpan").append(newLinkToTopic);
+  }
+
   $(function () {
     var socket = io();
+
+    $.ajax({
+      url: "/latest",
+    }).done(function(data) {
+      //alert(data);
+      data.forEach(createLinkInLatestList);
+    });
 
     //update number of communicators online
     socket.on('updateP', function(p) {

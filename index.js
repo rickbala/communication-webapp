@@ -1,11 +1,23 @@
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+const bodyParser = require('body-parser');
+const app = require('express')();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+
+app.use(bodyParser.json());
+
+//online peeps
 var p = 0;
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
+
+app.get('/latest', (req, res, next) => {
+  listOfLatest = [
+    'ABACATE', 'BRAZIL', 'CAN', 'DODGE', 'EPIPHANY', 'FLIGHT', 'GOD', 'HIGH', 'INTERNET', 'JOB'
+  ];
+  res.send(listOfLatest);
+})
 
 io.on('connection', (socket) => {
   //number of peeps plus
