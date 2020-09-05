@@ -60,16 +60,15 @@
   $(function () {
     var socket = io();
 
-    $.ajax({
-      url: "/latest",
-    }).done(function(data) {
-      //alert(data);
-      data.forEach(createLinkInLatestList);
-    });
-
     //update number of communicators online
     socket.on('updateP', function(p) {
       $('#p').html(p);
+    });
+
+    //update number of communicators online
+    socket.on('initialLatest', function(data) {
+      //alert(data);
+      data.forEach(createLinkInLatestList);
     });
 
     //creates a new topic and puts a new box on the screen

@@ -12,16 +12,19 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/latest', (req, res, next) => {
+function returnLatest(){
   listOfLatest = [
     'ABACATE', 'BRAZIL', 'CAN', 'DODGE', 'EPIPHANY', 'FLIGHT', 'GOD', 'HIGH', 'INTERNET', 'JOB'
   ];
-  res.send(listOfLatest);
-})
+  return listOfLatest;
+}
 
 io.on('connection', (socket) => {
   //number of peeps plus
   io.emit('updateP', ++p);
+
+  //populateInitialLatest
+  io.emit('initialLatest', returnLatest());
 
   //number of peeps down
   socket.on('disconnect', () => {
