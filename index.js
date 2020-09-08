@@ -41,6 +41,9 @@ io.on('connection', (socket) => {
 
   //chat message
   socket.on('chat message', (msg, box) => {
+    //append new msg to the current contents of the box
+    redisClient.append(box, msg + "<br/>");
+
     //emits a signal that will update the rigth box with a new message
     io.emit('chat message', msg, box);
   });
