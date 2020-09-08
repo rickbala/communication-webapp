@@ -20,6 +20,7 @@
     border-radius: 4px;
     overflow-y: auto;
   }
+  .spBoxTitle {display: table; margin: 0 auto; font-weight: bold;}
   #boxes {overflow: hidden;}
   #headerDiv {text-align: center}
 </style>
@@ -43,7 +44,11 @@
   function addABox(boxName){
     var boxIdDiv = "#box" + boxName;
       if ($(boxIdDiv).length === 0){ // if the box was not already placed
-        newBox = '<div class="box" id="box'+boxName+'">'+boxName+'</div>';
+        newBox = '<div class="box" id="box'+boxName+'">'+
+        // '<span class="spBoxTitle">'+boxName+'<br/></span>'+
+        '<span>'+boxName+'<br/></span>'+
+        '<span></span>'+
+        '</div>';
         $("#boxes").append(newBox);
       }
   }
@@ -108,9 +113,7 @@
     socket.on('chat message', function(msg, box) {
       var boxIdDiv = "#box" + box;
       if ($(boxIdDiv))
-        $(boxIdDiv).html($(boxIdDiv).html() + "<br/>" + msg);
-        //$(boxIdDiv).html(msg + "<br/>" + $(boxIdDiv).html() ); 
-        //ordem reversa, ver span como titulo e outra span como content
+        $(boxIdDiv + " span").last().html( msg+"<br/>"+$(boxIdDiv+" span").last().html() );
     });
 
   });
