@@ -22,7 +22,6 @@
     overflow-y: auto;
   }
   .spBoxTitle {display: table; margin: 0 auto; font-weight: bold;}
-  #latestList {max-width: 95%;}
   #boxes {overflow: hidden;}
   #headerDiv {text-align: center}
   h1{margin: 10px;}
@@ -43,7 +42,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
-  const MAX_CHARS_FOR_MSG = 200;
+  const MAX_CHARS_FOR_MSG = 100;
   const MAX_CHARS_FOR_BOX = 20;
 
   function addABox(boxName){

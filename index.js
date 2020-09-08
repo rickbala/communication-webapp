@@ -3,7 +3,7 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const redis = require("redis");
 
-const MAX_NUMBER_OF_MSG_BY_TOPIC = 500;
+const MAX_NUMBER_OF_MSG_BY_TOPIC = 400;
 
 //redis startup
 const redisClient = redis.createClient(); 
