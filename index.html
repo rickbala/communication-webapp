@@ -35,7 +35,6 @@
     <br/><br/>
     <div id="latestList">
       <span id="latestSpan">Latest: </span>
-      <!-- <a href="#" class="linkToABox">BRAZIL</a> -->
     </div>
   </div>
   <div id="boxes"></div>
@@ -54,7 +53,7 @@
 
   function createLinkInLatestList(topicName){
     newLinkToTopic = '<a href="#" class="linkToABox">'+topicName+'</a> ';
-    $("#latestSpan").append(newLinkToTopic);
+    $("#latestSpan").after(newLinkToTopic);
   }
 
   $(function () {
@@ -67,13 +66,14 @@
 
     //update number of communicators online
     socket.on('initialLatest', function(data) {
-      //alert(data);
-      data.forEach(createLinkInLatestList);
+      if ($(".linkToABox").length === 0){
+        data.forEach(createLinkInLatestList);
+      }
     });
 
     //creates a new topic and puts a new box on the screen
     $('#btnNewTopic').click(function(e) {
-      boxName = prompt("Topic Name: ");
+      boxName = prompt("Enter a Topic: ");
       if (boxName) {
         addABox(boxName);
         socket.emit('added a box', boxName);

@@ -16,7 +16,7 @@ function returnLatest(){
   listOfLatest = [
     'ABACATE', 'BRAZIL', 'CAN', 'DODGE', 'EPIPHANY', 'FLIGHT', 'GOD', 'HIGH', 'INTERNET', 'JOB'
   ];
-  return listOfLatest;
+  return listOfLatest.reverse();
 }
 
 io.on('connection', (socket) => {
