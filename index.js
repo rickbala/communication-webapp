@@ -3,6 +3,8 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const redis = require("redis");
 
+const MAX_NUMBER_OF_MSG_BY_TOPIC = 500;
+
 //redis startup
 const redisClient = redis.createClient(); 
 redisClient.on("error", function(error) {
@@ -30,7 +32,7 @@ function returnLatest(){
 //get contents of a box api
 app.get('/getBox', (req, res) => {
   var boxName = req.query.boxName;
-  redisClient.get(boxName, function(err, reply){
+  redisClient.lrange(boxName, "0", MAX_NUMBER_OF_MSG_BY_TOPIC - 1, function(err, reply){
     res.send(reply);
   });
 });
@@ -50,7 +52,7 @@ io.on('connection', (socket) => {
   //chat message
   socket.on('chat message', (msg, box) => {
     //append new msg to the current contents of the box
-    redisClient.append(box, msg + "<br/>");
+    redisClient.lpush(box, msg + "<br/>");
 
     //emits a signal that will update the rigth box with a new message
     io.emit('chat message', msg, box);

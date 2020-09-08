@@ -7,6 +7,7 @@
   .box {
     border: 1px solid black;
     width: 18%;
+    min-width: 210px;
     max-width: 250px;
     float: left;
     margin-left: 10px;
@@ -21,8 +22,10 @@
     overflow-y: auto;
   }
   .spBoxTitle {display: table; margin: 0 auto; font-weight: bold;}
+  #latestList {max-width: 95%;}
   #boxes {overflow: hidden;}
   #headerDiv {text-align: center}
+  h1{margin: 10px;}
 </style>
 </head>
 
@@ -34,14 +37,14 @@
     <div id="latestList">
       <span id="latestSpan">Latest: </span>
     </div>
-  </div>
+  </div><br/>
   <div id="boxes"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
   const MAX_CHARS_FOR_MSG = 200;
-  const MAX_CHARS_FOR_BOX = 15;
+  const MAX_CHARS_FOR_BOX = 20;
 
   function addABox(boxName){
     var boxIdDiv = "#box" + boxName;
