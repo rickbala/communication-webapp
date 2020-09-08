@@ -27,6 +27,14 @@ function returnLatest(){
   return listOfLatest;
 }
 
+//get contents of a box api
+app.get('/getBox', (req, res) => {
+  var boxName = req.query.boxName;
+  redisClient.get(boxName, function(err, reply){
+    res.send(reply);
+  });
+});
+
 io.on('connection', (socket) => {
   //number of peeps plus
   io.emit('updateP', ++p);

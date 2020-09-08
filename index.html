@@ -51,6 +51,10 @@
         '</div>';
         $("#boxes").append(newBox);
       }
+      $.get( "/getBox?boxName=" + boxName, function(data) {
+        var boxIdDiv = "#box" + boxName;
+        $(boxIdDiv + " span").last().html(data);
+      });
   }
 
   function createLinkInLatestList(topicName){
