@@ -1,22 +1,30 @@
-const bodyParser = require('body-parser');
 const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+const redis = require("redis");
 
-app.use(bodyParser.json());
+//redis startup
+const redisClient = redis.createClient(); 
+redisClient.on("error", function(error) {
+  console.error(error);
+});
 
 //online peeps
 var p = 0;
 
+listOfLatest = []
+//main page
 app.get('/', (req, res) => {
+  listOfLatest = returnLatest();
   res.sendFile(__dirname + '/index.html');
 });
 
+//grab the latest 10 topics from the database
 function returnLatest(){
-  listOfLatest = [
-    'ABACATE', 'BRAZIL', 'CAN', 'DODGE', 'EPIPHANY', 'FLIGHT', 'GOD', 'HIGH', 'INTERNET', 'JOB'
-  ];
-  return listOfLatest.reverse();
+  redisClient.lrange("latest", "0", "9", function (err, reply){
+    listOfLatest = reply.reverse();
+  });
+  return listOfLatest;
 }
 
 io.on('connection', (socket) => {
@@ -39,6 +47,9 @@ io.on('connection', (socket) => {
 
   //added a box
   socket.on('added a box', (boxName) => {
+    //save the new box name on redis database
+    redisClient.lpush("latest", boxName);
+
     //emits a signal that will update the list of latest boxes
     io.emit('added a box', boxName);
   });
