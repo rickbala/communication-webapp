@@ -26,13 +26,10 @@
 </head>
 
 <body>
-  <br/><br/>
-  <span id="title"><h1>Communication</h1></span>
+  <br/><br/><span id="title"><h1>Communication</h1></span>
   <div id="headerDiv">
-    Communicators online: <span id="p"></span>
-    <br/><br/>
-    <input type="button" id="btnNewTopic" value="Go To Topic..."></input>
-    <br/><br/>
+    Communicators online: <span id="p"></span><br/><br/>
+    <input type="button" id="btnNewTopic" value="Open Topic..."></input><br/><br/>
     <div id="latestList">
       <span id="latestSpan">Latest: </span>
     </div>
@@ -82,6 +79,7 @@
 
     //clicking to add one of the latest boxes
     $(document).on('click', '.linkToABox', function(e) {
+      e.preventDefault();
       var boxName = e.target.innerHTML;
       if (boxName) addABox(boxName);
     });
@@ -111,6 +109,8 @@
       var boxIdDiv = "#box" + box;
       if ($(boxIdDiv))
         $(boxIdDiv).html($(boxIdDiv).html() + "<br/>" + msg);
+        //$(boxIdDiv).html(msg + "<br/>" + $(boxIdDiv).html() ); 
+        //ordem reversa, ver span como titulo e outra span como content
     });
 
   });
