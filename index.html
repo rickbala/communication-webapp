@@ -85,7 +85,7 @@
     $('#btnNewTopic').click(function(e) {
       boxName = prompt("Enter a Topic: ");
       if (boxName) {
-        boxName = boxName.trim().replace(/ /g, "_").substring(0, MAX_CHARS_FOR_BOX).toUpperCase();
+        boxName = boxName.trim().replace(/ /g, "-").substring(0, MAX_CHARS_FOR_BOX).toUpperCase();
         var boxIdDiv = "#box" + boxName;
         if ($(boxIdDiv).length === 0){ // if the box was not already placed
           addABox(boxName);
