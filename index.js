@@ -3,6 +3,7 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const redis = require("redis");
 
+const PORT = process.env.PORT || 3000;
 const MAX_NUMBER_OF_MSG_BY_TOPIC = 400;
 
 //redis startup
@@ -29,7 +30,7 @@ function returnLatest(){
   return listOfLatest;
 }
 
-//get contents of a box api
+//get contents of a box - api
 app.get('/getBox', (req, res) => {
   var boxName = req.query.boxName;
   redisClient.lrange(boxName, "0", MAX_NUMBER_OF_MSG_BY_TOPIC - 1, function(err, reply){
@@ -69,6 +70,6 @@ io.on('connection', (socket) => {
 
 });
 
-http.listen(3000, () => {
-  console.log('listening on *:3000');
+http.listen(PORT, () => {
+  console.log('listening on port ' + PORT);
 });
