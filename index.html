@@ -112,6 +112,7 @@
     //for each box clicked, prompts for a message and emits it to all
     $(document).on('click', '.box', function(e) {
       var boxStr = e.target.id;
+      if (boxStr === "") boxStr = e.target.parentElement.id;
       var boxName = boxStr.substring(3, boxStr.length);
       msg = prompt("Say to " + boxName + ":");
       if (boxName && msg){
