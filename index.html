@@ -85,9 +85,11 @@
     $('#btnNewTopic').click(function(e) {
       boxName = prompt("Enter a Topic: ");
       if (boxName) {
-        boxName = boxName.trim().replace(/ /g, "_").substring(0, MAX_CHARS_FOR_BOX - 1).toUpperCase();
-        addABox(boxName);
-        socket.emit('added a box', boxName);
+        boxName = boxName.trim().replace(/ /g, "_").substring(0, MAX_CHARS_FOR_BOX).toUpperCase();
+        if ($(boxIdDiv).length === 0){ // if the box was not already placed
+          addABox(boxName);
+          socket.emit('added a box', boxName);
+        }
       }
     });
 
@@ -116,7 +118,7 @@
       var boxName = boxStr.substring(3, boxStr.length);
       msg = prompt("Say to " + boxName + ":");
       if (boxName && msg){
-        msg = msg.substring(0, MAX_CHARS_FOR_MSG - 1);
+        msg = msg.substring(0, MAX_CHARS_FOR_MSG);
         socket.emit('chat message', msg, boxName);
       }
     });
