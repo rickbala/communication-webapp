@@ -1,7 +1,7 @@
 {
   "name": "communication-webapp",
   "version": "1.0.0",
-  "description": "",
+  "description": "It's called Communication.",
   "main": "index.js",
   "scripts": {
     "start": "node index",
@@ -9,6 +9,7 @@
   },
   "author": "rickbala",
   "license": "MIT",
+  "private": true,
   "dependencies": {
     "express": "^4.17.1",
     "redis": "^3.0.2",
