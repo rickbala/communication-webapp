@@ -7,7 +7,8 @@ const PORT = process.env.PORT || 3000;
 const MAX_NUMBER_OF_MSG_BY_TOPIC = 400;
 
 //redis startup
-const redisClient = redis.createClient(); 
+const REDIS_URL = process.env.REDIS_URL || "redis://127.0.0.1:6379";
+const redisClient = redis.createClient(REDIS_URL);
 redisClient.on("error", function(error) {
   console.error(error);
 });
